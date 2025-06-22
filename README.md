@@ -241,36 +241,35 @@ curl http://<public-ip>:4000        # graphql-gateway
 
 ---
 
-## 📩 Java SNS/SQS Usage Example
+## 🏷️ Step 11: Tag AWS Resources
 
-**Publish SNS Message**
+**🧱 ECS Services**
 
-```java
-SnsClient snsClient = SnsClient.create();
-snsClient.publish(PublishRequest.builder()
-  .topicArn("arn:aws:sns:us-west-2:123456789012:javatest-topic")
-  .message("javatest.created")
-  .build());
+```bash
+aws ecs tag-resource \
+  --resource-arn arn:aws:ecs:us-west-2:<account-id>:service/<cluster-name>/<service-name> \
+  --tags key=Project,value=javatest \
+  --profile javatest-local --region us-west-2
 ```
 
-**Receive SQS Messages**
+**🧩 ECS Cluster**
 
-```java
-SqsClient sqsClient = SqsClient.create();
-sqsClient.receiveMessage(ReceiveMessageRequest.builder()
-  .queueUrl("https://sqs.us-west-2.amazonaws.com/123456789012/javatest-queue")
-  .maxNumberOfMessages(5)
-  .waitTimeSeconds(10)
-  .build())
-.getMessages()
-.forEach(msg -> {
-    System.out.println("📬 " + msg.body());
-});
+```bash
+aws ecs tag-resource \
+  --resource-arn arn:aws:ecs:us-west-2:<account-id>:cluster/<cluster-name> \
+  --tags key=Project,value=javatest \
+  --profile javatest-local --region us-west-2
 ```
 
----
+**🗃️ RDS Instance**
+```bash
+aws rds add-tags-to-resource \
+  --resource-name arn:aws:rds:us-west-2:<account-id>:db:database-1 \
+  --tags Key=Project,Value=javatest \
+  --profile javatest-local --region us-west-2
+```
 
-## 📊 Step 11: Monitor & Scale
+## 📊 Step 12: Monitor & Scale
 
 - **CloudWatch Logs**
 - **Auto Scaling**: ECS CPU/Memory
@@ -288,3 +287,35 @@ sqsClient.receiveMessage(ReceiveMessageRequest.builder()
 | Metrics | CloudWatch              |
 | IaC     | AWS CDK / Terraform     |
 | Gateway | API Gateway (Optional)  |
+
+---
+
+## 📩 Java SNS/SQS Usage Example
+
+**Publish SNS Message**
+
+```java
+SnsClient snsClient = SnsClient.create();
+snsClient.publish(PublishRequest.builder()
+  .topicArn("arn:aws:sns:us-west-2:123456789012:javatest-topic")
+  .message("javatest.created")
+  .build());
+```
+---
+
+**Receive SQS Messages**
+
+```java
+SqsClient sqsClient = SqsClient.create();
+sqsClient.receiveMessage(ReceiveMessageRequest.builder()
+  .queueUrl("https://sqs.us-west-2.amazonaws.com/123456789012/javatest-queue")
+  .maxNumberOfMessages(5)
+  .waitTimeSeconds(10)
+  .build())
+.getMessages()
+.forEach(msg -> {
+    System.out.println("📬 " + msg.body());
+});
+```
+
+---
