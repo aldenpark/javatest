@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import ProfileCard from "./ProfileCard";
 
 function App() {
+  const [profiles, setProfiles] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch("/api/profiles")
+      .then(res => res.json())
+      .then(data => setProfiles(data))
+      .catch(err => console.error("API error:", err));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ padding: "2rem", fontFamily: "Arial" }}>
+      <h1>Team Profiles</h1>
+      <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
+        {profiles.map((p, i) => (
+          <ProfileCard key={i} profile={p} />
+        ))}
+      </div>
     </div>
   );
+
 }
 
 export default App;
