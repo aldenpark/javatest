@@ -17,3 +17,4 @@ cp -r $FRONTEND_DIR/build/* $STATIC_DIR/
 
 echo "☕ Rebuilding Spring Boot JAR..."
 ./mvnw clean package
+docker build -t javatestapi:latest .
