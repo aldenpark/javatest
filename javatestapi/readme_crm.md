@@ -16,7 +16,8 @@ Entities use UUID primary keys, created/updated timestamps, and basic validation
 
 ---
 
-## What Was Added (package structure)
+## Spring Boot
+### What Was Added (package structure)
 
 All new code lives under `src/main/java/com/example/javatestapi/crm`:
 
@@ -41,19 +42,41 @@ src/main/java/com/example/javatestapi/
    └─ CorsConfig.java     # CORS helper
 ```
 
-- `crm/model/BaseEntity.java` – common base (UUID id, createdAt, updatedAt)
-- `crm/model/Lead.java`
-- `crm/model/Account.java`
-- `crm/model/Contact.java`
-- `crm/repository/LeadRepository.java`
-- `crm/repository/AccountRepository.java`
-- `crm/repository/ContactRepository.java`
-- `crm/web/LeadController.java`
-- `crm/web/AccountController.java`
-- `crm/web/ContactController.java`
+## React
+```
+src/
+├─ app/
+│  ├─ App.jsx
+│  ├─ routes.jsx
+│  ├─ Layout.jsx
+│  └─ ErrorBoundary.jsx
+├─ lib/
+│  ├─ http.js           # axios instance + interceptors
+│  └─ config.js         # base URLs, env helpers
+├─ modules/
+│  ├─ crm/
+│  │  ├─ model/         # UI-facing shapes, mappers, validators
+│  │  │  └─ Lead.model.js
+│  │  ├─ service/       # UI business logic (compose repository calls)
+│  │  │  └─ leadsService.js
+│  │  ├─ repository/    # Data-access layer: raw HTTP calls to /api/leads
+│  │  │  └─ leadsApi.js
+│  │  └─ web/           # React UI (pages/components)
+│  │     ├─ components/
+│  │     │  ├─ LeadsTable.jsx
+│  │     │  └─ LeadForm.jsx
+│  │     └─ pages/
+│  │        └─ LeadsPage.jsx
+│  └─ profiles/
+│     ├─ repository/
+│     │  └─ profilesApi.js
+│     └─ web/
+│        └─ pages/
+│           └─ ProfilesPage.jsx
+├─ index.jsx
+└─ App.css
 
-Optional (only if needed for React dev CORS):
-- `config/CorsConfig.java`
+```
 
 ---
 
