@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -7,7 +8,6 @@
   <artifactId>javatestapi</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
-
   <name>JavaTest API</name>
   <description>Spring Boot service with SNS/SQS support</description>
 
@@ -20,9 +20,9 @@
   
   <properties>
     <java.version>17</java.version>
-    <spring-cloud.version>2023.0.1</spring-cloud.version>
+    <!-- <spring-cloud.version>2023.0.1</spring-cloud.version> -->
   </properties>
-
+<!-- 
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -33,7 +33,7 @@
         <scope>import</scope>
       </dependency>
     </dependencies>
-  </dependencyManagement>
+  </dependencyManagement> -->
 
   <dependencies>
     <!-- Spring Boot Web & Actuator -->
@@ -60,6 +60,20 @@
       <scope>runtime</scope>
     </dependency>
 
+  <!-- MariaDB driver -->
+  <!-- <dependency>
+    <groupId>org.mariadb.jdbc</groupId>
+    <artifactId>mariadb-java-client</artifactId>
+    <scope>runtime</scope>
+  </dependency> -->
+
+    <!-- Validation -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+
+
     <!-- AWS SDK v2 -->
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
@@ -71,11 +85,11 @@
       <artifactId>sns</artifactId>
       <version>2.25.25</version>
     </dependency>
-    <dependency>
+    <!-- <dependency>
       <groupId>software.amazon.awssdk</groupId>
       <artifactId>secretsmanager</artifactId>
       <version>2.25.16</version>
-    </dependency>
+    </dependency> -->
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
       <artifactId>auth</artifactId>
@@ -161,12 +175,16 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <layers enabled="true"/>
+        </configuration>
       </plugin>
       <!-- Compiler Plugin for config metadata -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
+          <release>17</release>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.springframework.boot</groupId>
@@ -174,7 +192,7 @@
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
-			</plugin>
+			</plugin>      
     </plugins>
   </build>
 

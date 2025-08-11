@@ -1,1 +1,22 @@
-# for local postgress
+services:
+  api:
+    network_mode: host
+    build:
+      context: ./javatestapi
+      dockerfile: Dockerfile
+    container_name: javatest_api
+    env_file:
+      - ./javatestapi/.env
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    #   DB_HOST: localhost
+    #   DB_PORT: 5432
+    #   DB_NAME: javatest
+    #   DB_USER: javatest
+    #   DB_PASSWORD: javatest
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  db_data:
