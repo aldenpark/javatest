@@ -3,10 +3,14 @@ package com.example.javatestapi.crm.web;
 import com.example.javatestapi.crm.model.Lead;
 import com.example.javatestapi.crm.repository.LeadRepository;
 import jakarta.validation.Valid;
+
+import java.net.URI;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 
 /** 
@@ -28,8 +32,12 @@ public class LeadController {
     }
 
     @PostMapping
-    public ResponseEntity<Lead> create(@Valid @RequestBody Lead body) {
-        return ResponseEntity.ok(repo.save(body));
+    public ResponseEntity<Lead> create(@Valid @RequestBody Lead body, UriComponentsBuilder uriBuilder) {
+        // Ensure the client can't override ID on create
+        body.setId(null);
+        Lead saved = repo.save(body);
+        URI location = uriBuilder.path("/api/leads/{id}").build(saved.getId());
+        return ResponseEntity.created(location).body(saved);
     }
 
     @PutMapping("/{id}")

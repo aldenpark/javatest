@@ -38,7 +38,7 @@ src/main/java/com/example/javatestapi/
 │     ├─ AccountController.java
 │     └─ ContactController.java
 └─ config/
-   └─ CorsConfig.java     # only if you want the CORS helper
+   └─ CorsConfig.java     # CORS helper
 ```
 
 - `crm/model/BaseEntity.java` – common base (UUID id, createdAt, updatedAt)
