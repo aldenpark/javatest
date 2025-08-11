@@ -1,5 +1,10 @@
 package com.example.javatestapi.crm.model;
 
+import java.util.Locale;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +18,22 @@ import jakarta.validation.constraints.NotBlank;
 @Table(name = "leads")
 public class Lead extends BaseEntity {
 
-    public enum Status { NEW, QUALIFIED, LOST, CONVERTED }
+
+    public enum Status {
+        NEW, QUALIFIED, LOST, CONVERTED;
+
+        @JsonCreator
+        public static Status fromJson(String v) {
+            if (v == null) return null;
+            return Status.valueOf(v.trim().toUpperCase(Locale.ROOT));
+        }
+
+        @JsonValue
+        public String toJson() {
+            String s = name().toLowerCase(Locale.ROOT);
+            return Character.toUpperCase(s.charAt(0)) + s.substring(1); // New, Qualified, Lost, Converted
+        }
+    }
 
     @NotBlank @Column(nullable = false) private String firstName;
     @NotBlank @Column(nullable = false) private String lastName;

@@ -27,7 +27,7 @@ export default function LeadsPage() {
 
   const onCancelEdit = () => setEditing(null);
 
-  const onQualify = (lead) => update(lead.id, { ...lead, status: "Qualified" });
+  const onQualify = (lead) => update(lead.id, { ...lead, status: "QUALIFIED" });
   const onDelete  = (lead) => remove(lead.id);
 
   return (
