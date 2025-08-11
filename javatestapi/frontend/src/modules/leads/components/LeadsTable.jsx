@@ -1,4 +1,4 @@
-export default function LeadsTable({ rows, onQualify, onDelete }) {
+export default function LeadsTable({ rows, onQualify, onDelete, onEdit }) {
   return (
     <table width="100%" cellPadding={8} border={1}>
       <thead>
@@ -15,6 +15,7 @@ export default function LeadsTable({ rows, onQualify, onDelete }) {
             <td>{r.status || "-"}</td>
             <td>{r.active ? "Yes" : "No"}</td>
             <td>
+              <button onClick={() => onEdit(r)}>Edit</button>
               <button onClick={() => onQualify(r)}>Qualify</button>
               <button onClick={() => onDelete(r)}>Delete</button>
             </td>

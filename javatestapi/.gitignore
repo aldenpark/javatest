@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Node dependencies
+node_modules/
+src/main/resources/static/*

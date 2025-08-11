@@ -1,10 +1,31 @@
+import { useState } from "react";
 import { useLeads } from "../hooks/useLeads";
 import LeadsTable from "../components/LeadsTable";
 import LeadForm from "../components/LeadForm";
 
 export default function LeadsPage() {
-  const { rows, total, page, size, setPage, setSize, loading, error, create, update, remove } =
-    useLeads({ page: 0, size: 20, sort: "createdAt,desc" });
+  const {
+    rows, total, page, size, setPage, setSize,
+    loading, error, create, update, remove
+  } = useLeads({ page: 0, size: 20, sort: "createdAt,desc" });
+
+  const [editing, setEditing] = useState(null); // the lead being edited (or null)
+
+  const onCreate = async (data) => {
+    await create(data);
+    // stays in create mode
+  };
+
+  const onStartEdit = (lead) => setEditing(lead);
+
+  const onSaveEdit = async (patch) => {
+    // patch may contain only changed fields; merge with the current one
+    const payload = { ...editing, ...patch, id: editing.id };
+    await update(editing.id, payload);
+    setEditing(null);
+  };
+
+  const onCancelEdit = () => setEditing(null);
 
   const onQualify = (lead) => update(lead.id, { ...lead, status: "Qualified" });
   const onDelete  = (lead) => remove(lead.id);
@@ -13,10 +34,30 @@ export default function LeadsPage() {
     <div className="p-4">
       <h1 className="text-xl font-semibold mb-4">Leads</h1>
 
-      <LeadForm onSubmit={create} busy={loading} />
+      {editing ? (
+        <LeadForm
+          mode="edit"
+          value={editing}
+          onSubmit={onSaveEdit}
+          onCancel={onCancelEdit}
+          busy={loading}
+        />
+      ) : (
+        <LeadForm
+          mode="create"
+          onSubmit={onCreate}
+          busy={loading}
+        />
+      )}
 
       {error && <div className="error">{error}</div>}
-      <LeadsTable rows={rows} onQualify={onQualify} onDelete={onDelete} />
+
+      <LeadsTable
+        rows={rows}
+        onEdit={onStartEdit}      // <-- NEW: open edit mode
+        onQualify={onQualify}
+        onDelete={onDelete}
+      />
 
       {/* Pagination */}
       <div className="mt-3 flex items-center gap-2">
